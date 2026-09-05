@@ -1,0 +1,115 @@
+{
+  "timestamp": 1788585567.6110425,
+  "providers": {
+    "ollama": {
+      "provider": "ollama",
+      "model": "qwen2.5:1.5b",
+      "avg_ttft_ms": 74.46,
+      "avg_latency_ms": 74.37,
+      "avg_throughput_tok_per_sec": 317.24,
+      "total_tokens_generated": 70,
+      "results": [
+        {
+          "prompt_id": "reasoning-01",
+          "category": "reasoning",
+          "title": "River Crossing Logic Puzzle",
+          "provider": "ollama",
+          "model": "qwen2.5:1.5b",
+          "ttft_ms": 68.43,
+          "total_latency_ms": 69.39,
+          "prompt_tokens": 118,
+          "completion_tokens": 29,
+          "throughput_tok_per_sec": 417.93,
+          "output_text": "[MockResponse from qwen2.5:1.5b]: Processed prompt: A farmer needs to cross a river with a wolf, a goat, and a cabbage. His boat can...",
+          "success": true,
+          "error_message": null
+        },
+        {
+          "prompt_id": "code-01",
+          "category": "code_generation",
+          "title": "Sliding Window Maximum Function",
+          "provider": "ollama",
+          "model": "qwen2.5:1.5b",
+          "ttft_ms": 76.73,
+          "total_latency_ms": 77.48,
+          "prompt_tokens": 97,
+          "completion_tokens": 19,
+          "throughput_tok_per_sec": 245.22,
+          "output_text": "[MockResponse from qwen2.5:1.5b]: Processed prompt: Write a Python function `max_sliding_window(nums: list[int], k: int) -> list[int...",
+          "success": true,
+          "error_message": null
+        },
+        {
+          "prompt_id": "summarize-01",
+          "category": "summarization",
+          "title": "Distributed Consensus & Raft Architecture",
+          "provider": "ollama",
+          "model": "qwen2.5:1.5b",
+          "ttft_ms": 78.23,
+          "total_latency_ms": 76.24,
+          "prompt_tokens": 245,
+          "completion_tokens": 22,
+          "throughput_tok_per_sec": 288.56,
+          "output_text": "[MockResponse from qwen2.5:1.5b]: Processed prompt: Summarize the following technical passage into exactly 3 key bullet points, high...",
+          "success": true,
+          "error_message": null
+        }
+      ]
+    },
+    "groq": {
+      "provider": "groq",
+      "model": "llama-3.1-8b-instant",
+      "avg_ttft_ms": 31.04,
+      "avg_latency_ms": 31.35,
+      "avg_throughput_tok_per_sec": 748.81,
+      "total_tokens_generated": 70,
+      "results": [
+        {
+          "prompt_id": "reasoning-01",
+          "category": "reasoning",
+          "title": "River Crossing Logic Puzzle",
+          "provider": "groq",
+          "model": "llama-3.1-8b-instant",
+          "ttft_ms": 30.94,
+          "total_latency_ms": 30.15,
+          "prompt_tokens": 118,
+          "completion_tokens": 29,
+          "throughput_tok_per_sec": 961.86,
+          "output_text": "[MockResponse from llama-3.1-8b-instant]: Processed prompt: A farmer needs to cross a river with a wolf, a goat, and a cabbage. His boat can...",
+          "success": true,
+          "error_message": null
+        },
+        {
+          "prompt_id": "code-01",
+          "category": "code_generation",
+          "title": "Sliding Window Maximum Function",
+          "provider": "groq",
+          "model": "llama-3.1-8b-instant",
+          "ttft_ms": 31.48,
+          "total_latency_ms": 32.39,
+          "prompt_tokens": 97,
+          "completion_tokens": 19,
+          "throughput_tok_per_sec": 586.6,
+          "output_text": "[MockResponse from llama-3.1-8b-instant]: Processed prompt: Write a Python function `max_sliding_window(nums: list[int], k: int) -> list[int...",
+          "success": true,
+          "error_message": null
+        },
+        {
+          "prompt_id": "summarize-01",
+          "category": "summarization",
+          "title": "Distributed Consensus & Raft Architecture",
+          "provider": "groq",
+          "model": "llama-3.1-8b-instant",
+          "ttft_ms": 30.69,
+          "total_latency_ms": 31.52,
+          "prompt_tokens": 245,
+          "completion_tokens": 22,
+          "throughput_tok_per_sec": 697.97,
+          "output_text": "[MockResponse from llama-3.1-8b-instant]: Processed prompt: Summarize the following technical passage into exactly 3 key bullet points, high...",
+          "success": true,
+          "error_message": null
+        }
+      ]
+    }
+  }
+}

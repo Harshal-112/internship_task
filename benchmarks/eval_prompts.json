@@ -1,0 +1,44 @@
+[
+  {
+    "id": "reasoning-01",
+    "category": "reasoning",
+    "title": "River Crossing Logic Puzzle",
+    "description": "Tests multi-step logical deduction, constraint satisfaction, and sequential planning.",
+    "system_prompt": "You are an expert logical reasoning assistant. Explain your step-by-step thinking before providing the final answer.",
+    "prompt": "A farmer needs to cross a river with a wolf, a goat, and a cabbage. His boat can only carry himself and one other item at a time. If left alone together on either bank without the farmer, the wolf will eat the goat, and the goat will eat the cabbage. How can the farmer get everything across the river safely in the minimum number of trips? Provide the exact sequence of trips with explanation.",
+    "evaluation_criteria": [
+      "Identifies that goat must cross first",
+      "Correctly prevents wolf and goat or goat and cabbage from being left alone",
+      "Demonstrates bringing the goat back on trip 3 or 5",
+      "Arrives at valid 7-trip solution"
+    ]
+  },
+  {
+    "id": "code-01",
+    "category": "code_generation",
+    "title": "Sliding Window Maximum Function",
+    "description": "Tests Python algorithmic code generation with time/space complexity constraints and edge case handling.",
+    "system_prompt": "You are a senior software engineer. Write clean, idiomatic Python code with type hints, docstrings, and optimal time complexity.",
+    "prompt": "Write a Python function `max_sliding_window(nums: list[int], k: int) -> list[int]` that finds the maximum value in every sliding window of size k moving from left to right across the list. The solution must run in O(n) time complexity using collections.deque. Include docstrings, type annotations, and handle edge cases such as empty input or k <= 0.",
+    "evaluation_criteria": [
+      "Correct O(n) implementation using collections.deque",
+      "Maintains monotonic decreasing order in deque",
+      "Proper window index eviction (i - k)",
+      "Handles edge cases (empty list, k > len(nums), k <= 0)"
+    ]
+  },
+  {
+    "id": "summarize-01",
+    "category": "summarization",
+    "title": "Distributed Consensus & Raft Architecture",
+    "description": "Tests technical text distillation, key fact preservation, and concise bullet-point synthesis.",
+    "system_prompt": "You are a technical documentation specialist. Summarize complex distributed systems concepts accurately and concisely.",
+    "prompt": "Summarize the following technical passage into exactly 3 key bullet points, highlighting the leader election, log replication, and safety guarantees:\n\nRaft is a consensus algorithm designed to be an alternative to Multi-Paxos. It was intended to be more understandable than Paxos by means of separation of logic, but it is also formally proven safe and offers some additional features. Raft achieves consensus through an elected leader. A server in a raft cluster is either a leader, a follower, or a candidate. When the current leader fails or heartbeats lapse, followers time out and transition to candidates, requesting votes from peers with randomized election timers to prevent split votes. Once elected, the leader accepts client commands, appends them to its log, and directs followers to replicate entries through AppendEntries RPCs. An entry is considered committed once replicated across a majority of nodes. To guarantee safety, Raft ensures the Leader Completeness Property: if a log entry is committed in a given term, that entry will be present in the logs of the leaders for all higher-numbered terms.",
+    "evaluation_criteria": [
+      "Produces exactly 3 bullet points",
+      "Accurately summarizes randomized timer leader election",
+      "Accurately summarizes log replication across quorum majority",
+      "States the safety property (Leader Completeness)"
+    ]
+  }
+]

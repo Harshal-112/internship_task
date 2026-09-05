@@ -5,7 +5,7 @@ Supports Layer 1 (Core & Security), Layer 2 (Local Ollama), and Layer 3 (Groq & 
 import os
 from enum import Enum
 from functools import lru_cache
-from typing import List, Optional, Set
+from typing import Any, List, Optional, Set, Union
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -26,7 +26,8 @@ class Settings(BaseSettings):
 
     # Client Authentication & Rate Limiting (Layer 1)
     # Static list of valid client keys for L1-06 (configured via env or .env)
-    GATEWAY_API_KEYS: List[str] = Field(default_factory=lambda: ["gw-test-key-1", "gw-test-key-2"])
+    GATEWAY_API_KEYS: Union[List[str], str] = Field(default_factory=lambda: ["gw-test-key-1", "gw-test-key-2"])
+
     RATE_LIMIT_PER_MINUTE: int = 60
 
     # Local LLM - Ollama (Layer 2)

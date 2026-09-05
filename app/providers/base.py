@@ -41,17 +41,19 @@ class BaseLLMProvider(abc.ABC):
 class MockLLMProvider(BaseLLMProvider):
     """Deterministic, zero-dependency mock provider for offline testing & benchmarking."""
 
-    def __init__(self, model: str = "mock-model", simulate_latency_ms: float = 20.0):
+    def __init__(self, model: str = "mock-model", simulate_latency_ms: float = 20.0, name: str = "mock"):
         self._model = model
+        self._name = name
         self.simulate_latency_ms = simulate_latency_ms
 
     @property
     def name(self) -> str:
-        return "mock"
+        return self._name
 
     @property
     def default_model(self) -> str:
         return self._model
+
 
     async def check_health(self) -> bool:
         return True
@@ -75,7 +77,7 @@ class MockLLMProvider(BaseLLMProvider):
         latency_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
 
         return ChatResponse(
-            provider="mock",
+            provider=self._name,
             model=request.model or self._model,
             choices=[
                 ChatChoice(
