@@ -378,14 +378,3 @@ tests/test_ollama_provider.py::test_langchain_stream PASSED              [100%]
 ```
 
 ---
-
-## 8. Subagent Execution Logs & Deliverable References
-
-Review individual subagent logs for deep-dive decisions, trade-offs, and verification data:
-- [Subagent 1 (Core Service) Log](file:///d:/internship_task/logs/subagent_1_core_service.md)
-- [Subagent 2 (Local Deployment & Benchmarking) Log](file:///d:/internship_task/logs/subagent_2_local_deploy.md)
-- [Subagent 3 (Multi-Provider Observability) Log](file:///d:/internship_task/logs/subagent_3_observability.md)
-- [Configuration Guide](file:///d:/internship_task/docs/configuration.md)
-- [8GB RAM Sizing & Recommendations](file:///d:/internship_task/docs/recommendations.md)
-- [Observability & Log Schema](file:///d:/internship_task/docs/observability.md)
-- [Benchmark Report](file:///d:/internship_task/benchmarks/benchmark_report.md)
