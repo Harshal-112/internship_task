@@ -379,40 +379,7 @@ tests/test_ollama_provider.py::test_langchain_stream PASSED              [100%]
 
 ---
 
-## 8. Interview Defense & Technical Rationale Guide
-
-Use this section to articulate key architecture decisions clearly during technical interviews:
-
-### Q1: Why build this as a layered single service rather than separate microservices?
-> **Answer**: Building as layered modules within one FastAPI service eliminated distributed network overhead, network serialization latency, and the operational burden of managing 3 independent deployable units. Modules share a single source of truth for Pydantic v2 schemas (`ChatRequest`, `TokenUsage`) and configuration (`Settings`), while remaining strictly decoupled through abstract interfaces (`BaseLLMProvider`). If needed, any provider or the router can be extracted into a separate container with zero refactoring.
-
-### Q2: Why select `qwen2.5:1.5b` as the local model on an 8GB RAM host?
-> **Answer**: On an 8GB machine, the OS consumes ~2.5GB, development tools and IDE consume ~1.5GB, and FastAPI/Python processes consume ~200MB, leaving ~3.5GB of free physical memory. 
-> - A 7B model (Q4_K_M) demands 5.2GB+ of RAM, inevitably causing severe memory paging and disk thrashing.
-> - `qwen2.5:1.5b` (Q4_K_M) requires only **~1.4GB of RAM** and runs comfortably within physical memory. Crucially, Qwen 2.5's architecture matches or outperforms older 7B models on reasoning and code generation tasks while delivering over 300+ tokens/sec on CPU.
-
-### Q3: Why choose Groq instead of OpenAI for the cloud tier?
-> **Answer**: 
-> 1. **Zero Billing & Accessibility**: Groq provides a generous free-tier without requiring credit card registration or paid commitments.
-> 2. **Extreme Throughput**: Running `openai/gpt-oss-20b` on Groq's custom LPU hardware delivers 315–345+ tokens/sec with sub-1.6s latency, providing a dramatic contrast in the benchmark harness against local CPU execution.
-> 3. **API Standard Conformance**: Groq follows the OpenAI chat completion API schema natively, making it a drop-in replacement.
-
-### Q4: How does the sliding-window rate limiter prevent boundary attack spikes?
-> **Answer**: Fixed-window rate limiters allow double the burst capacity at window boundaries (e.g. 60 requests at 00:59 and 60 requests at 01:01 = 120 requests in 2 seconds). Our `SlidingWindowRateLimiter` records sub-second timestamps per client key in a collections deque. When a request arrives, entries older than 60 seconds are purged, and the current length is checked. This guarantees that at no instantaneous 60-second window can a client exceed 60 requests.
-
-### Q5: How does the router guarantee zero downtime and graceful failover?
-> **Answer**: The router employs an ordered candidate chain. When a request targets `groq`, the chain is constructed as `[groq, ollama, mock]`.
-> 1. **Fast-path pre-check**: If `GROQ_API_KEY` is not present, the router skips network attempts and immediately tries the next candidate, avoiding a 5-second connection timeout.
-> 2. **Mid-flight failover**: If Groq returns HTTP 429 (quota exceeded) or network timeouts, the router catches the typed exception, logs a warning with client context, and seamlessly executes against local Ollama or Mock.
-
-### Q6: How do you prevent secret leakage into centralized logging infrastructure?
-> **Answer**: Redaction is enforced at two distinct levels:
-> 1. **Structured Log Formatter Level**: `StructuredJSONFormatter` processes every log payload before serialization. It runs regex patterns matching Groq keys (`gsk_...`), configured gateway keys (`gw-...`), and `Authorization: Bearer <token>` strings.
-> 2. **Object Traversal Level**: The `redact_secrets` utility recursively traverses dictionaries, scrubbing any key named `api_key`, `secret`, `password`, `token`, or `authorization`.
-
----
-
-## 9. Subagent Execution Logs & Deliverable References
+## 8. Subagent Execution Logs & Deliverable References
 
 Review individual subagent logs for deep-dive decisions, trade-offs, and verification data:
 - [Subagent 1 (Core Service) Log](file:///d:/internship_task/logs/subagent_1_core_service.md)
