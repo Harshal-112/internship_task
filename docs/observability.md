@@ -28,7 +28,7 @@ Every chat completion event logged by the gateway adheres to the following JSON 
 | `request_id` | string | Unique request identifier (`X-Request-ID`) | `"req-8f4e2b10a9c3"` |
 | `client_id` | string (or null) | Masked client identification key | `"gw-test-key-****"` |
 | `provider` | string | LLM provider fulfilling completion | `"groq"`, `"ollama"`, `"mock"` |
-| `model` | string | Target model utilized | `"llama-3.1-8b-instant"` |
+| `model` | string | Target model utilized | `"openai/gpt-oss-20b"` |
 | `prompt_tokens` | integer | Tokens consumed in prompt/messages | `24` |
 | `completion_tokens` | integer | Tokens generated in response | `48` |
 | `total_tokens` | integer | Sum of prompt and completion tokens | `72` |
@@ -55,11 +55,11 @@ Every chat completion event logged by the gateway adheres to the following JSON 
   "timestamp": "2026-09-05T05:01:22.451892+00:00",
   "level": "INFO",
   "logger": "gateway.observability",
-  "message": "Chat completion handled by 'groq' (llama-3.1-8b-instant) - Status: 200 - Latency: 135.20ms",
+  "message": "Chat completion handled by 'groq' (openai/gpt-oss-20b) - Status: 200 - Latency: 135.20ms",
   "request_id": "req-9a1b2c3d4e5f",
   "client_id": "gw-test-key-****",
   "provider": "groq",
-  "model": "llama-3.1-8b-instant",
+  "model": "openai/gpt-oss-20b",
   "prompt_tokens": 18,
   "completion_tokens": 52,
   "total_tokens": 70,

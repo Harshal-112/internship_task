@@ -94,7 +94,7 @@ def test_telemetry_event_contains_all_10_required_fields(log_capture: StringIO):
         request_id="req-abc-123",
         client_id="gw-test-key-****",
         provider="groq",
-        model="llama-3.1-8b-instant",
+        model="openai/gpt-oss-20b",
         prompt_tokens=42,
         completion_tokens=58,
         total_tokens=100,
@@ -110,7 +110,7 @@ def test_telemetry_event_contains_all_10_required_fields(log_capture: StringIO):
     assert event["request_id"] == "req-abc-123"
     assert event["client_id"] == "gw-test-key-****"
     assert event["provider"] == "groq"
-    assert event["model"] == "llama-3.1-8b-instant"
+    assert event["model"] == "openai/gpt-oss-20b"
     assert event["prompt_tokens"] == 42
     assert event["completion_tokens"] == 58
     assert event["total_tokens"] == 100

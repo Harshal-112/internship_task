@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     # Cloud Provider - Groq Free Tier (Layer 3)
     # Requires only free tier API key from https://console.groq.com (No billing required)
     GROQ_API_KEY: Optional[str] = None
-    GROQ_DEFAULT_MODEL: str = "llama-3.1-8b-instant"
+    GROQ_DEFAULT_MODEL: str = "openai/gpt-oss-20b"
 
     # Multi-Provider Routing & Observability (Layer 3)
     DEFAULT_PROVIDER: ProviderType = ProviderType.MOCK

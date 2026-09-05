@@ -33,7 +33,7 @@ Configuration is managed via Pydantic Settings (`app/core/config.py`) and loaded
 | `OLLAMA_FALLBACK_MODEL`| `str` | `"gemma2:2b"` | Fallback local LLM model. |
 | `OLLAMA_REQUEST_TIMEOUT`| `float`| `60.0` | Timeout in seconds for Ollama requests. |
 | `GROQ_API_KEY` | `str` (Optional)| `None` | API key for Groq Cloud API (Layer 3). |
-| `GROQ_DEFAULT_MODEL` | `str` | `"llama-3.1-8b-instant"` | Default Groq model for cloud acceleration. |
+| `GROQ_DEFAULT_MODEL` | `str` | `"openai/gpt-oss-20b"` | Default Groq model for cloud acceleration. |
 | `DEFAULT_PROVIDER` | `str` | `"mock"` | Default fallback provider (`mock`, `ollama`, `groq`). |
 | `ENABLE_STRUCTURED_LOGGING`| `bool`| `True` | Output logs in structured JSON format. |
 | `LOG_LEVEL` | `str` | `"INFO"` | Log level (`DEBUG`, `INFO`, `WARNING`, `ERROR`). |
@@ -156,7 +156,7 @@ OLLAMA_REQUEST_TIMEOUT=60.0
 
 # Cloud Groq Provider (Optional)
 GROQ_API_KEY=""
-GROQ_DEFAULT_MODEL="llama-3.1-8b-instant"
+GROQ_DEFAULT_MODEL="openai/gpt-oss-20b"
 
 # Gateway Policy
 DEFAULT_PROVIDER="mock"

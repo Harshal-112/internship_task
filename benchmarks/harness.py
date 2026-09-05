@@ -150,7 +150,7 @@ async def run_single_prompt_benchmark(
         model=provider.default_model,
         messages=messages,
         temperature=0.2,
-        max_tokens=512,
+        max_tokens=prompt_data.get("max_tokens", 1024),
     )
 
     ttfts: List[float] = []

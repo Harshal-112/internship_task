@@ -37,9 +37,9 @@ The gateway operates as a single high-performance FastAPI service where each lay
                        ▼                                             ▼
 ┌───────────────────────────────────────────┐ ┌──────────────────────────────────────────┐
 │  Cloud Provider: Groq API (L3-08)         │ │  LAYER 2: Local LLM Provider (L2-08)     │
-│  - Model: `llama-3.1-8b-instant`          │ │  - Model: `qwen2.5:1.5b` (Ollama daemon) │
+│  - Model: `openai/gpt-oss-20b`            │ │  - Model: `qwen2.5:1.5b` (Ollama daemon) │
 │  - Free-tier API key (zero billing)       │ │  - LangChain-compatible interface        │
-│  - Fast cloud inference (~700+ tok/s)     │ │  - 8GB RAM host optimization (<1.4GB RAM)│
+│  - Fast cloud inference (~330+ tok/s)     │ │  - 8GB RAM host optimization (<1.4GB RAM)│
 └───────────────────────────────────────────┘ └──────────────────────────────────────────┘
                        │                                             │
                        └──────────────────────┬──────────────────────┘
@@ -165,7 +165,7 @@ OLLAMA_DEFAULT_MODEL="qwen2.5:1.5b"
 
 # Cloud Model (Groq Free Tier - Optional, No Billing)
 GROQ_API_KEY=""
-GROQ_DEFAULT_MODEL="llama-3.1-8b-instant"
+GROQ_DEFAULT_MODEL="openai/gpt-oss-20b"
 
 # Default Provider ("mock", "ollama", or "groq")
 DEFAULT_PROVIDER="mock"
@@ -277,33 +277,36 @@ chmod +x ./scripts/deploy_ollama.sh
 
 ## 6. Running the Evaluation Benchmark Harness
 
-Compare local LLM (`qwen2.5:1.5b`) vs Cloud Groq (`llama-3.1-8b-instant`) on Latency, Time-To-First-Token (TTFT), Throughput (tok/s), and qualitative answer quality:
+Compare local LLM (`qwen2.5:1.5b`) vs Cloud Groq (`openai/gpt-oss-20b`) on Latency, Time-To-First-Token (TTFT), Throughput (tok/s), and qualitative answer quality:
 
 ```bash
 # Offline Mock Mode (Zero dependencies):
 python scripts/run_benchmark.py --mock
 
 # Live Mode (against running Ollama and/or Groq API key):
-python scripts/run_benchmark.py --runs 3
+python scripts/run_benchmark.py --provider all
 ```
 
-Sample Benchmark Output:
+Verified Benchmark Performance Summary:
 ```
 ========================================================================================
                       LLM BENCHMARK PERFORMANCE SUMMARY
 ========================================================================================
 Provider   | Model                | Task             | TTFT (ms)  | Latency (ms) | Throughput (tok/s)
 ----------------------------------------------------------------------------------------
-ollama     | qwen2.5:1.5b         | River Crossing L | 68.4       | 69.4         | 417.9             
-ollama     | qwen2.5:1.5b         | Sliding Window M | 76.7       | 77.5         | 245.2             
-ollama     | qwen2.5:1.5b         | Distributed Cons | 78.2       | 76.2         | 288.6             
-OLLAMA     | qwen2.5:1.5b         | AVERAGE          | 74.5       | 74.4         | 317.2             
+ollama     | qwen2.5:1.5b         | River Crossing L | 12160.4 *  | 3609.6       | 88.6              
+ollama     | qwen2.5:1.5b         | Sliding Window M | 779.7      | 3943.8       | 90.5              
+ollama     | qwen2.5:1.5b         | Distributed Cons | 995.4      | 1959.5       | 76.0              
+........................................................................................
+OLLAMA     | qwen2.5:1.5b         | AVERAGE          | 4645.2     | 3171.0       | 85.1              
 ----------------------------------------------------------------------------------------
-groq       | llama-3.1-8b-instant | River Crossing L | 30.9       | 30.1         | 961.9             
-groq       | llama-3.1-8b-instant | Sliding Window M | 31.5       | 32.4         | 586.6             
-groq       | llama-3.1-8b-instant | Distributed Cons | 30.7       | 31.5         | 698.0             
-GROQ       | llama-3.1-8b-instant | AVERAGE          | 31.0       | 31.4         | 748.8             
+groq       | openai/gpt-oss-20b   | River Crossing L | 2337.7     | 1036.5       | 494.0             
+groq       | openai/gpt-oss-20b   | Sliding Window M | 3389.6     | 2264.8       | 345.7             
+groq       | openai/gpt-oss-20b   | Distributed Cons | 1571.1     | 1539.3       | 106.5             
+........................................................................................
+GROQ       | openai/gpt-oss-20b   | AVERAGE          | 2432.8     | 1613.5       | 315.4             
 ========================================================================================
+* Note: Ollama's first prompt included initial cold-start model weight load from disk.
 ```
 
 ---
@@ -391,7 +394,7 @@ Use this section to articulate key architecture decisions clearly during technic
 ### Q3: Why choose Groq instead of OpenAI for the cloud tier?
 > **Answer**: 
 > 1. **Zero Billing & Accessibility**: Groq provides a generous free-tier without requiring credit card registration or paid commitments.
-> 2. **Extreme Throughput**: Running Llama 3.1 8B on Groq's custom LPU hardware delivers 700–900+ tokens/sec with sub-40ms latency, providing a dramatic contrast in the benchmark harness against local CPU execution.
+> 2. **Extreme Throughput**: Running `openai/gpt-oss-20b` on Groq's custom LPU hardware delivers 315–345+ tokens/sec with sub-1.6s latency, providing a dramatic contrast in the benchmark harness against local CPU execution.
 > 3. **API Standard Conformance**: Groq follows the OpenAI chat completion API schema natively, making it a drop-in replacement.
 
 ### Q4: How does the sliding-window rate limiter prevent boundary attack spikes?

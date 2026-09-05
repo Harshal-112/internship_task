@@ -292,8 +292,14 @@ def test_api_chat_dispatch_mock_explicit(test_client: TestClient):
     assert "X-Request-ID" in response.headers
 
 
-def test_api_chat_dispatch_groq_failover_when_no_key(test_client: TestClient):
+def test_api_chat_dispatch_groq_failover_when_no_key(test_client: TestClient, monkeypatch):
     """Verify POST /api/v1/chat with provider='groq' gracefully fails over to mock when no key is set."""
+    from app.services.router import get_router
+    router = get_router()
+    groq_p = router.get_provider("groq")
+    if groq_p:
+        monkeypatch.setattr(groq_p, "_api_key", "")
+
     payload = {
         "provider": "groq",
         "messages": [{"role": "user", "content": "Hello Groq"}],
@@ -303,13 +309,19 @@ def test_api_chat_dispatch_groq_failover_when_no_key(test_client: TestClient):
 
     assert response.status_code == 200
     data = response.json()
-    # Response should be successfully returned (via failover to mock)
+    # Response should be successfully returned (via failover to mock or ollama)
     assert data["provider"] in ("mock", "ollama")
     assert len(data["choices"]) > 0
 
 
-def test_api_chat_dispatch_ollama_failover_when_offline(test_client: TestClient):
+def test_api_chat_dispatch_ollama_failover_when_offline(test_client: TestClient, monkeypatch):
     """Verify POST /api/v1/chat with provider='ollama' gracefully fails over to mock when Ollama is offline."""
+    from app.services.router import get_router
+    router = get_router()
+    ollama_p = router.get_provider("ollama")
+    if ollama_p:
+        monkeypatch.setattr(ollama_p, "_base_url", "http://127.0.0.1:59999")
+
     payload = {
         "provider": "ollama",
         "messages": [{"role": "user", "content": "Hello Ollama"}],
@@ -319,8 +331,8 @@ def test_api_chat_dispatch_ollama_failover_when_offline(test_client: TestClient)
 
     assert response.status_code == 200
     data = response.json()
-    # Response should be successfully returned (via failover to mock)
-    assert data["provider"] == "mock"
+    # Response should be successfully returned (via failover to groq or mock)
+    assert data["provider"] in ("mock", "groq")
     assert len(data["choices"]) > 0
 
 

@@ -79,7 +79,10 @@ class GroqProvider(BaseLLMProvider):
         client: Optional[Any] = None,
     ):
         settings = get_settings()
-        self._api_key = api_key or settings.GROQ_API_KEY or os.getenv("GROQ_API_KEY")
+        if api_key is not None:
+            self._api_key = api_key
+        else:
+            self._api_key = settings.GROQ_API_KEY or os.getenv("GROQ_API_KEY")
         self._default_model = model or settings.GROQ_DEFAULT_MODEL
         self._timeout = timeout
         self._fallback_to_mock = fallback_to_mock
